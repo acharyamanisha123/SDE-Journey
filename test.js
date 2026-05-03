@@ -1,22 +1,37 @@
-let students = [
-  {
-  name: "Rahul",
-  score : 45},
-  
-  {
-    name: "Priya",
-    score:90
-  }];
+const students = [
+  {name:"Rahul",score:45},
+  {name:"Priya",score:90},
+  {name:"Amit",score:72}
+];
 
-function evaluateMarks(score){
-  if(score>=50){
-    return "Passed";
-  }
-  else{
-    return "Failed";
-  }
-}
+const button = document.getElementById("load-btn");
+const container = document.getElementById("table-container");
+
+button.addEventListener("click",()=>{
+  //Start building a string in  HTML
+  let tableHTML = `<table border = "1" style="width:100%; text-align:left; margin-top:20px;">
+  <tr>
+  <th>Name</th>
+  <th>Score</th>
+  <th>Status</th>
+  </tr>`;
+//Loop through data and rows
+
 for(let student of students){
-  let marks = evaluateMarks(students.score);
-  console.log(student.name + " scored " + student.score +  " and " + marks);
+  let status = student.score >-50 ? "Passed":"Failed";
+
+  tableHTML += `<tr>
+        <td>${student.name}</td>
+        <td>${student.score}</td>
+        <td>${status}</td>
+  </tr>`
 }
+
+tableHTML += `</table>`;
+
+// Inject the string into the website
+container.innerHTML = tableHTML;
+
+// Clean up: hide the button after loading
+button.style.display="none";
+});
