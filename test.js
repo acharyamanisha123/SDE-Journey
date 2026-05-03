@@ -1,9 +1,14 @@
 let scores = [32, 55, 90, 45, 82, 30];
-for (let score of scores){
+function evaluateMarks(score){
   if(score >= 50){
-    console.log("Passed:" + score);
+    return ("Passed");
   }
   else{
-    console.log("Failed:" +  score);
+    return ("Failed");
   }
+
+}
+for (let score of scores){
+  let result = evaluateMarks(score);
+  console.log("Score " + score + " is a " + result);
 }
