@@ -1,39 +1,67 @@
-const students = [
-  {name:"Rahul",score:45},
-  {name:"Priya",score:90},
-  {name:"Amit",score:72}
+// 1. DATA (Our "Database")
+let students = [
+    { name: "Rahul", score: 45 },
+    { name: "Priya", score: 90 }
 ];
 
-const button = document.getElementById("load-btn");
-const container = document.getElementById("table-container");
-
-button.addEventListener("click",()=>{
-  //Start building a string in  HTML
-  let tableHTML = `<table border = "1" style="width:100%; text-align:left; margin-top:20px;">
-  <tr>
-  <th>Name</th>
-  <th>Score</th>
-  <th>Status</th>
-  </tr>`;
-//Loop through data and rows
-
-for(let student of students){
-  let status = student.score >=50 ? "Passed":"Failed";
-  let color =student.score >=50 ? "green":"red";
-
-
-  tableHTML += `<tr>
-        <td>${student.name}</td>
-        <td>${student.score}</td>
-        <td style="color : ${color}">${status}</td>
-  </tr>`;
+// 2. LOGIC (The "Machine")
+function evaluateMarks(score) {
+    if (score >= 50) {
+        return "Passed";
+    } else {
+        return "Failed";
+    }
 }
 
-tableHTML += `</table>`;
+// 3. UI RENDERING (The "Painter")
+function renderTable() {
+    const container = document.getElementById("table-container");
+    
+    let tableHTML = `<table>
+                        <tr>
+                            <th>Name</th>
+                            <th>Score</th>
+                            <th>Status</th>
+                        </tr>`;
 
-// Inject the string into the website
-container.innerHTML = tableHTML;
+    for (let s of students) {
+        let status = evaluateMarks(s.score);
+        let color = s.score >= 50 ? "#238636" : "#da3633"; // Green for pass, Red for fail
+        
+        tableHTML += `<tr>
+                        <td>${s.name}</td>
+                        <td>${s.score}</td>
+                        <td style="color: ${color}; font-weight: bold;">${status}</td>
+                      </tr>`;
+    }
 
-// Clean up: hide the button after loading
-button.style.display="none";
+    tableHTML += `</table>`;
+    container.innerHTML = tableHTML;
+}
+
+// 4. INTERACTION (The "Listener")
+const nameInput = document.getElementById("student-name");
+const scoreInput = document.getElementById("student-score");
+const addBtn = document.getElementById("add-btn");
+
+addBtn.addEventListener("click", () => {
+    const name = nameInput.value;
+    const score = parseInt(scoreInput.value);
+
+    if (name && !isNaN(score)) {
+        // Add new data to our list
+        students.push({ name: name, score: score });
+        
+        // Redraw the table with the new data
+        renderTable();
+
+        // Clear the inputs for the next entry
+        nameInput.value = "";
+        scoreInput.value = "";
+    } else {
+        alert("Please enter a valid name and score!");
+    }
 });
+
+// Initial call to show the starting data
+renderTable();
