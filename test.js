@@ -18,13 +18,15 @@ button.addEventListener("click",()=>{
 //Loop through data and rows
 
 for(let student of students){
-  let status = student.score >-50 ? "Passed":"Failed";
+  let status = student.score >=50 ? "Passed":"Failed";
+  let color =student.score >=50 ? "green":"red";
+
 
   tableHTML += `<tr>
         <td>${student.name}</td>
         <td>${student.score}</td>
-        <td>${status}</td>
-  </tr>`
+        <td style="color : ${color}">${status}</td>
+  </tr>`;
 }
 
 tableHTML += `</table>`;
