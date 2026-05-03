@@ -1,6 +1,9 @@
-let tasks = ["Install Git", "Solve Two Sum", "Drink Water"];
-
-let removedTask = tasks.pop();
-
-console.log(tasks);
-console.log(removedTask);
+let scores = [32, 55, 90, 45, 82, 30];
+for (let score of scores){
+  if(score >= 50){
+    console.log("Passed:" + score);
+  }
+  else{
+    console.log("Failed:" +  score);
+  }
+}
