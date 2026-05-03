@@ -1,14 +1,22 @@
-let scores = [32, 55, 90, 45, 82, 30];
+let students = [
+  {
+  name: "Rahul",
+  score : 45},
+  
+  {
+    name: "Priya",
+    score:90
+  }];
+
 function evaluateMarks(score){
-  if(score >= 50){
-    return ("Passed");
+  if(score>=50){
+    return "Passed";
   }
   else{
-    return ("Failed");
+    return "Failed";
   }
-
 }
-for (let score of scores){
-  let result = evaluateMarks(score);
-  console.log("Score " + score + " is a " + result);
+for(let student of students){
+  let marks = evaluateMarks(students.score);
+  console.log(student.name + " scored " + student.score +  " and " + marks);
 }
