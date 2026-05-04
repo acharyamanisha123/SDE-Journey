@@ -33,14 +33,27 @@ analyzeBtn.addEventListener("click", () => {
 });
 
 function renderFeedback(score, skills, words) {
+    // 1. Calculate a color based on the score
+    let scoreColor = score > 50 ? "#238636" : (score > 20 ? "#d29922" : "#da3633");
+
     feedbackContainer.innerHTML = `
-        <div style="margin-top: 20px; padding: 20px; border: 1px solid #30363d; border-radius: 8px; background: #161b22;">
-            <h3>AI Analysis Score: ${score}/100</h3>
-            <p><strong>Skills Detected:</strong> ${skills.join(", ") || "None detected"}</p>
-            <p><strong>Action Verbs Used:</strong> ${words.join(", ") || "None detected"}</p>
-            <p style="color: ${score > 30 ? "#238636" : "#da3633"}">
-                ${score > 30 ? "Strong Resume! Ready to apply." : "Needs Improvement: Add more tech keywords."}
-            </p>
+        <div class="result-card" style="margin-top: 30px; padding: 25px; border-radius: 12px; background: #161b22; border: 1px solid #30363d; text-align: left;">
+            <h2 style="margin-top: 0;">Resume Analysis Result</h2>
+            
+            <!-- 2. The Progress Bar -->
+            <div style="background: #30363d; height: 10px; border-radius: 5px; margin: 15px 0;">
+                <div style="background: ${scoreColor}; width: ${score}%; height: 100%; border-radius: 5px; transition: width 0.5s ease-in-out;"></div>
+            </div>
+
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-size: 24px; font-weight: bold; color: ${scoreColor};">${score}/100</span>
+                <span>${score > 30 ? "✅ Looking Good" : "⚠️ Needs More Keywords"}</span>
+            </div>
+
+            <hr style="border: 0; border-top: 1px solid #30363d; margin: 20px 0;">
+
+            <p><strong>Technical Skills:</strong> ${skills.length > 0 ? skills.join(", ") : "None detected"}</p>
+            <p><strong>Action Verbs:</strong> ${words.length > 0 ? words.join(", ") : "None detected"}</p>
         </div>
     `;
 }
