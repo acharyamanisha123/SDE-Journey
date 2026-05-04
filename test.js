@@ -9,7 +9,22 @@ const feedbackContainer = document.getElementById("feedback-container");
 
 // 3. ANALYSIS LOGIC
 analyzeBtn.addEventListener("click", () => {
+   
     const text = resumeInput.value.toLowerCase();
+    const counts = getFrequency(text, techSkills);
+    console.log("Skill Frequencies:", counts);
+    // Finding the "Top Skill" (The Max Value Puzzle)
+let topSkill = "None";
+let maxCount = 0;
+
+for (const skill in counts) {
+    if (counts[skill] > maxCount) {
+        maxCount = counts[skill];
+        topSkill = skill;
+    }
+}
+
+console.log("Your strongest skill is:", topSkill);
     
     // Variables to track our findings
     let score = 0;
@@ -80,4 +95,32 @@ function renderFeedback(score, skills, words, missing) {
             ${suggestionsHTML}
         </div>
     `;
+}
+document.getElementById("clear-btn").addEventListener("click", () => {
+    resumeInput.value = "";
+    feedbackContainer.innerHTML = "";
+});
+const wordCountDisplay = document.getElementById("word-count");
+
+resumeInput.addEventListener("input", () => {
+    const text = resumeInput.value.trim();
+    // The "Puzzle" logic: Split the string by spaces and count the resulting array
+    const words = text ? text.split(/\s+/).length : 0;
+    wordCountDisplay.innerText = words;
+});
+function getFrequency(text, skillList) {
+    let frequencyMap = {}; // This is our "Map"
+
+    // Split text into an array of words
+    const words = text.toLowerCase().split(/\W+/); 
+
+    words.forEach(word => {
+        // If the word is one of our tech skills...
+        if (skillList.includes(word)) {
+            // If it's already in our map, add 1. If not, start at 1.
+            frequencyMap[word] = (frequencyMap[word] || 0) + 1;
+        }
+    });
+
+    return frequencyMap;
 }
