@@ -1,67 +1,46 @@
-// 1. DATA (Our "Database")
-let students = [
-    { name: "Rahul", score: 45 },
-    { name: "Priya", score: 90 }
-];
+// 1. The "Knowledge Base" (Keywords recruiters look for)
+const powerWords = ["implemented", "optimized", "led", "developed", "managed", "scaled"];
+const techSkills = ["javascript", "python", "react", "git", "html", "css", "node"];
 
-// 2. LOGIC (The "Machine")
-function evaluateMarks(score) {
-    if (score >= 50) {
-        return "Passed";
-    } else {
-        return "Failed";
-    }
-}
+const analyzeBtn = document.getElementById("analyze-btn");
+const resumeInput = document.getElementById("resume-text");
+const feedbackContainer = document.getElementById("feedback-container");
 
-// 3. UI RENDERING (The "Painter")
-function renderTable() {
-    const container = document.getElementById("table-container");
-    
-    let tableHTML = `<table>
-                        <tr>
-                            <th>Name</th>
-                            <th>Score</th>
-                            <th>Status</th>
-                        </tr>`;
+analyzeBtn.addEventListener("click", () => {
+    const text = resumeInput.value.toLowerCase(); // Convert to lowercase for easy searching
+    let score = 0;
+    let foundSkills = [];
+    let foundPowerWords = [];
 
-    for (let s of students) {
-        let status = evaluateMarks(s.score);
-        let color = s.score >= 50 ? "#238636" : "#da3633"; // Green for pass, Red for fail
-        
-        tableHTML += `<tr>
-                        <td>${s.name}</td>
-                        <td>${s.score}</td>
-                        <td style="color: ${color}; font-weight: bold;">${status}</td>
-                      </tr>`;
-    }
+    // 2. Logic: Scanning for Tech Skills
+    techSkills.forEach(skill => {
+        if (text.includes(skill)) {
+            score += 10;
+            foundSkills.push(skill);
+        }
+    });
 
-    tableHTML += `</table>`;
-    container.innerHTML = tableHTML;
-}
+    // 3. Logic: Scanning for Power Words (Action Verbs)
+    powerWords.forEach(word => {
+        if (text.includes(word)) {
+            score += 5;
+            foundPowerWords.push(word);
+        }
+    });
 
-// 4. INTERACTION (The "Listener")
-const nameInput = document.getElementById("student-name");
-const scoreInput = document.getElementById("student-score");
-const addBtn = document.getElementById("add-btn");
-
-addBtn.addEventListener("click", () => {
-    const name = nameInput.value;
-    const score = parseInt(scoreInput.value);
-
-    if (name && !isNaN(score)) {
-        // Add new data to our list
-        students.push({ name: name, score: score });
-        
-        // Redraw the table with the new data
-        renderTable();
-
-        // Clear the inputs for the next entry
-        nameInput.value = "";
-        scoreInput.value = "";
-    } else {
-        alert("Please enter a valid name and score!");
-    }
+    // 4. UI Rendering: Display the Result
+    renderFeedback(score, foundSkills, foundPowerWords);
 });
 
-// Initial call to show the starting data
-renderTable();
+function renderFeedback(score, skills, words) {
+    feedbackContainer.innerHTML = `
+        <div style="margin-top: 20px; padding: 20px; border: 1px solid #30363d; border-radius: 8px; background: #161b22;">
+            <h3>AI Analysis Score: ${score}/100</h3>
+            <p><strong>Skills Detected:</strong> ${skills.join(", ") || "None detected"}</p>
+            <p><strong>Action Verbs Used:</strong> ${words.join(", ") || "None detected"}</p>
+            <p style="color: ${score > 30 ? "#238636" : "#da3633"}">
+                ${score > 30 ? "Strong Resume! Ready to apply." : "Needs Improvement: Add more tech keywords."}
+            </p>
+        </div>
+    `;
+}
